@@ -1,31 +1,34 @@
+# Step 1: Import necessary libraries
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-# Sample dataset (Student scores)
+# Step 2: Load the dataset 
 data = {
-    'Hours_Studied': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    'Attendance': [60, 62, 65, 70, 72, 75, 80, 85, 90, 95],
-    'Passed': [0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
+    'hours_studied': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    'attendance':    [40, 55, 60, 65, 70, 75, 80, 85, 90, 95],
+    'assignment_score': [10, 20, 30, 40, 50, 60, 65, 75, 85, 95],
+    'final_result':  [0, 0, 0, 0, 1, 1, 1, 1, 1, 1]  # 1 = Pass, 0 = Fail
 }
-
 df = pd.DataFrame(data)
 
-# Splitting input and output
-X = df[['Hours_Studied', 'Attendance']]
-y = df['Passed']
+# Step 3: Prepare input and output
+X = df.drop('final_result', axis=1)  # Features
+y = df['final_result']               # Target
 
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Step 4: Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model creation
+# Step 5: Train the Logistic Regression model
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# Prediction
+# Step 6: Make predictions and check accuracy
 y_pred = model.predict(X_test)
-
-# Accuracy
 accuracy = accuracy_score(y_test, y_pred)
-print("Model Accuracy:", accuracy)
+
+# Step 7: Display results
+print("Predicted results:", y_pred)
+print("Actual results:   ", list(y_test))
+print("Model Accuracy:    {:.2f}".format(accuracy))
